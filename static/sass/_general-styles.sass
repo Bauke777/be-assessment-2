@@ -1,0 +1,283 @@
+/* Base styles */
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+body
+  color: $dark-gray
+  background: $white
+  font: $regular 1rem / 150% $font-stack
+
+/* Typography */
+p
+  color: $dark-gray
+
+a
+  border-bottom: 1px solid currentcolor
+  text-decoration: none
+  transition: border-bottom ease 150ms
+
+  &:hover,
+  &:focus
+    color: inherit
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+    margin-bottom: .5ch
+    text-rendering: optimizeLegibility
+    letter-spacing: .125ch
+
+h1
+    font: $bold 2rem / 150% $font-stack
+    color: $orange
+
+h2
+    font: $semi-bold 1.75rem / 150% $font-stack
+    color: $dark-orange
+
+h3
+    font: $semi-bold 1.5rem / 150% $font-stack
+    color: $dark-orange
+
+h4
+    font: $semi-bold 1.25rem / 150% $font-stack
+    color: $gray
+    text-transform: uppercase
+
+h6
+    font: $semi-bold 1rem / 150% $font-stack
+    color: $gray
+    text-transform: uppercase
+
+/* Tables */
+table
+  display: table
+  border-collapse: collapse
+  border-color: currentcolor
+
+td,
+th
+  border: 1px solid currentcolor
+  padding: 1ch
+
+th
+  text-align: start
+  background-color: goldenrod
+  font-weight: $bold
+
+/* Description list */
+dt
+  font-weight: $bold
+  float: left
+
+dt::after
+  content: ':'
+  margin-right: 0.5ch
+
+tr:nth-child(odd)
+  background-color: hsla(43, 74%, 49%, 0.1)
+
+/* Images */
+img
+    max-width: 100%
+
+/* Buttons */
+.button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"]
+    border: 1px solid lighten($gray, 50%)
+    border-radius: 3px
+    padding: .6875rem 1.2rem
+    font: $medium .8rem / 150% $font-stack
+    color: $gray
+    letter-spacing: .035rem
+    text-decoration: none
+    transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
+    display: inline-block
+    margin: 0 0 1rem
+    line-height: 1.5rem
+    text-transform: uppercase
+    text-align: center
+
+    &:hover
+        border-color: $gray
+
+    &.button-primary
+        background: $secondary-color
+        border-color: $secondary-color
+        color: $white
+
+        &:hover
+            background: lighten($secondary-color, 10%)
+            border-color: lighten($secondary-color, 10%)
+
+    .svg-inline--fa
+        margin-right: .6875rem
+
+// Buttons in dark sections
+section.dark-section
+
+    .button,
+    button,
+    input[type="submit"],
+    input[type="reset"],
+    input[type="button"]
+        border: 1px solid $primary-color
+        color: $white
+
+        &:hover
+            border-color: $primary-color
+            background-color: $primary-color
+
+        &.button-primary
+            background-color: $primary-color
+
+            &:hover
+                background: darken($primary-color, 10%)
+                border-color: darken($primary-color, 10%)
+
+    p
+
+        a
+            color: $white
+            border-bottom: 1px solid $orange
+
+            &:hover
+                border-bottom: 1px solid transparent
+
+/* Forms */
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="text"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+textarea,
+select
+    height: 3rem
+    padding: .5rem .8rem
+    background-color: $white
+    border: 1px solid #D1D1D1
+    border-radius: .25rem
+    box-shadow: none
+    box-sizing: border-box
+
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="text"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+textarea
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+
+textarea
+    min-height: 65px
+    padding-top: 6px
+    padding-bottom: 6px
+
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus
+    border: 1px solid #33C3F0
+    outline: 0
+
+label,
+legend
+    display: block
+    margin-bottom: .5rem
+    font-weight: 600
+
+fieldset
+    padding: 0
+    border-width: 0
+
+input[type="checkbox"],
+input[type="radio"]
+    display: inline
+
+label > .label-body
+    display: inline-block
+    margin-left: .5rem
+    font-weight: normal
+
+/* Social list */
+.social-item
+    background: $gray
+    border: 0
+    width: 100%
+    display: block
+    padding: 1rem 3rem
+    color: $white
+    text-align: center
+    border-radius: 3px
+    text-decoration: none
+    transition: all .2s ease-out
+
+    &:hover
+        transition: all .2s ease-in
+        transform: scale(1.05)
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,1))
+
+    span
+        display: block
+        font-size: 1rem
+        line-height: 1rem
+        margin-top: .5rem
+        text-transform: uppercase
+        letter-spacing: .0625rem
+        font: $medium .8rem / 100% $font-stack
+
+    &.social-item__codepen
+        background: rgba(230,73,128,1.0)
+
+    &.social-item__github
+        background: rgba(21,170,191,1.0)
+
+    &.social-item__spotify
+        background: rgba(30,215,96,1.0)
+
+    &.social-item__linkedin
+        background: rgba(0,119,181,1.0)
+
+/* Wrapper */
+.wrapper
+    padding: 0 1rem
+    max-width: 24rem
+    margin: 0 auto
+
+/* @media (Larger than mobile [25rem]) */
+@media #{$larger-than-mobile}
+    .wrapper
+        padding-left: 2rem
+        padding-right: 2rem
+        max-width: 50rem
+
+@media (min-width: $breakpoint-lg)
+    .wrapper
+        padding-left: 5rem
+        padding-right: 5rem
+        max-width: 1472px
+
+@media (min-width: $breakpoint-xl)
+    .wrapper
+        padding-left: 10rem
+        padding-right: 10rem
+        max-width: 1472px

@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+config.codekit3
+package-lock.json

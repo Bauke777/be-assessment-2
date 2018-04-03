@@ -1,0 +1,69 @@
+[
+  {
+    "id": "0",
+    "first_name": "Laura",
+    "last_name": "van der Veen",
+    "email": "lauravanderveen@hotmail.com",
+    "password": "laura123!",
+    "profile_picture": "laura.jpg",
+    "gender": "Female",
+    "birthday": "01-01-1994",
+    "description": "Leuke spontane en uitgaande meid, op zoek naar een leuke sportbuddy!"
+  },
+  {
+    "id": "1",
+    "first_name": "Mireille",
+    "last_name": "de Lange",
+    "email": "mrosingdall1@globo.com",
+    "gender": "Female",
+    "password": "ngyydC"
+  },
+  {
+    "id": "2",
+    "first_name": "Fitz",
+    "last_name": "Ubanks",
+    "email": "fubanks2@usatoday.com",
+    "gender": "Male",
+    "password": "WrActv3M98"
+  },
+  {
+    "id": "3",
+    "first_name": "Ezekiel",
+    "last_name": "Paddingdon",
+    "email": "epaddingdon3@berkeley.edu",
+    "gender": "Male",
+    "password": "uZfFPOO"
+  },
+  {
+    "id": "4",
+    "first_name": "Dudley",
+    "last_name": "Knowling",
+    "email": "dknowling4@blog.com",
+    "gender": "Male",
+    "password": "DFVC52urHoTl"
+  },
+  {
+    "id": "5",
+    "first_name": "Lisanne",
+    "last_name": "Bergen",
+    "email": "lisannebergen@gmail.com",
+    "gender": "Female",
+    "password": "s46pcLV"
+  },
+  {
+    "id": "6",
+    "first_name": "Jeddy",
+    "last_name": "Thorne",
+    "email": "jthorne6@google.cn",
+    "gender": "Male",
+    "password": "E7r6IqdSS"
+  },
+  {
+    "id": "7",
+    "first_name": "Ange",
+    "last_name": "Eglington",
+    "email": "aeglington7@rediff.com",
+    "gender": "Male",
+    "password": "ZdCKkIR"
+  }
+]
