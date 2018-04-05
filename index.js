@@ -20,12 +20,20 @@ express()
   .get('/users/:index', get)
   .delete('/:index', remove) // Remove user
   .post('/', register)
+  .get('/', login)
   .listen(port)
+
+// Render the register form
+function login(req, res) {
+  res.render('login.ejs', {
+    title: 'Login'
+  })
+}
 
 // Get all users
 function all(req, res) {
   res.render('list.ejs', {
-    title: 'Users',
+    title: 'All users',
     users: db
   })
 }
