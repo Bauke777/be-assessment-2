@@ -104,9 +104,10 @@ img {
 /* Buttons */
 .button,
 button,
+button[type="submit"],
+button[type="reset"],
 input[type="submit"],
-input[type="reset"],
-input[type="button"] {
+input[type="reset"] {
   border: 1px solid #e4e6eb;
   border-radius: 3px;
   padding: .6875rem 1.2rem;
@@ -115,30 +116,34 @@ input[type="button"] {
   letter-spacing: .035rem;
   text-decoration: none;
   transition: background .2s ease-in, border .2s ease-in, color .2s ease-in;
-  display: inline-block;
   margin: 0 0 1rem;
   line-height: 1.5rem;
   text-transform: uppercase;
-  text-align: center; }
+  text-align: center;
+  margin-bottom: 1rem;
+  display: block; }
   .button:hover,
   button:hover,
+  button[type="submit"]:hover,
+  button[type="reset"]:hover,
   input[type="submit"]:hover,
-  input[type="reset"]:hover,
-  input[type="button"]:hover {
+  input[type="reset"]:hover {
     border-color: #596377; }
   .button.button-primary,
   button.button-primary,
+  button[type="submit"].button-primary,
+  button[type="reset"].button-primary,
   input[type="submit"].button-primary,
-  input[type="reset"].button-primary,
-  input[type="button"].button-primary {
+  input[type="reset"].button-primary {
     background: #ff8c07;
     border-color: #ff8c07;
     color: white; }
     .button.button-primary:hover,
     button.button-primary:hover,
+    button[type="submit"].button-primary:hover,
+    button[type="reset"].button-primary:hover,
     input[type="submit"].button-primary:hover,
-    input[type="reset"].button-primary:hover,
-    input[type="button"].button-primary:hover {
+    input[type="reset"].button-primary:hover {
       background: #ffa43a;
       border-color: #ffa43a; }
 
@@ -161,17 +166,8 @@ select {
   border: 1px solid #D1D1D1;
   border-radius: .25rem;
   box-shadow: none;
-  box-sizing: border-box; }
-
-input[type="email"],
-input[type="date"],
-input[type="number"],
-input[type="search"],
-input[type="text"],
-input[type="tel"],
-input[type="url"],
-input[type="password"],
-textarea {
+  box-sizing: border-box;
+  margin-bottom: 1rem;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none; }

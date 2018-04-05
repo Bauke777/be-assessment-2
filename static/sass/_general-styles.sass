@@ -90,9 +90,10 @@ img
 /* Buttons */
 .button,
 button,
+button[type="submit"],
+button[type="reset"],
 input[type="submit"],
-input[type="reset"],
-input[type="button"]
+input[type="reset"]
     border: 1px solid lighten($gray, 50%)
     border-radius: 3px
     padding: .6875rem 1.2rem
@@ -101,11 +102,12 @@ input[type="button"]
     letter-spacing: .035rem
     text-decoration: none
     transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
-    display: inline-block
     margin: 0 0 1rem
     line-height: 1.5rem
     text-transform: uppercase
     text-align: center
+    margin-bottom: 1rem
+    display: block
 
     &:hover
         border-color: $gray
@@ -139,16 +141,7 @@ select
     border-radius: .25rem
     box-shadow: none
     box-sizing: border-box
-
-input[type="email"],
-input[type="date"],
-input[type="number"],
-input[type="search"],
-input[type="text"],
-input[type="tel"],
-input[type="url"],
-input[type="password"],
-textarea
+    margin-bottom: 1rem
     -webkit-appearance: none
     -moz-appearance: none
     appearance: none
