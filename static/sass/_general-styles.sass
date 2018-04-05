@@ -12,6 +12,7 @@ body
 /* Typography */
 p
   color: $dark-gray
+  margin-bottom: 1rem
 
 a
   border-bottom: 1px solid currentcolor
@@ -33,8 +34,8 @@ h6
     letter-spacing: .125ch
 
 h1
-    font: $bold 2rem / 150% $font-stack
-    color: $orange
+    font: $regular 1.75rem / 150% $font-stack
+    color: $dark-gray
 
 h2
     font: $semi-bold 1.75rem / 150% $font-stack
@@ -118,42 +119,9 @@ input[type="button"]
             background: lighten($secondary-color, 10%)
             border-color: lighten($secondary-color, 10%)
 
-    .svg-inline--fa
-        margin-right: .6875rem
-
-// Buttons in dark sections
-section.dark-section
-
-    .button,
-    button,
-    input[type="submit"],
-    input[type="reset"],
-    input[type="button"]
-        border: 1px solid $primary-color
-        color: $white
-
-        &:hover
-            border-color: $primary-color
-            background-color: $primary-color
-
-        &.button-primary
-            background-color: $primary-color
-
-            &:hover
-                background: darken($primary-color, 10%)
-                border-color: darken($primary-color, 10%)
-
-    p
-
-        a
-            color: $white
-            border-bottom: 1px solid $orange
-
-            &:hover
-                border-bottom: 1px solid transparent
-
 /* Forms */
 input[type="email"],
+input[type="date"],
 input[type="number"],
 input[type="search"],
 input[type="text"],
@@ -162,6 +130,8 @@ input[type="url"],
 input[type="password"],
 textarea,
 select
+    font: $regular .6875rem / 100% $font-stack
+    color: $gray
     height: 3rem
     padding: .5rem .8rem
     background-color: $white
@@ -171,6 +141,7 @@ select
     box-sizing: border-box
 
 input[type="email"],
+input[type="date"],
 input[type="number"],
 input[type="search"],
 input[type="text"],
@@ -188,6 +159,7 @@ textarea
     padding-bottom: 6px
 
 input[type="email"]:focus,
+input[type="date"]:focus,
 input[type="number"]:focus,
 input[type="search"]:focus,
 input[type="text"]:focus,
@@ -217,67 +189,3 @@ label > .label-body
     display: inline-block
     margin-left: .5rem
     font-weight: normal
-
-/* Social list */
-.social-item
-    background: $gray
-    border: 0
-    width: 100%
-    display: block
-    padding: 1rem 3rem
-    color: $white
-    text-align: center
-    border-radius: 3px
-    text-decoration: none
-    transition: all .2s ease-out
-
-    &:hover
-        transition: all .2s ease-in
-        transform: scale(1.05)
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,1))
-
-    span
-        display: block
-        font-size: 1rem
-        line-height: 1rem
-        margin-top: .5rem
-        text-transform: uppercase
-        letter-spacing: .0625rem
-        font: $medium .8rem / 100% $font-stack
-
-    &.social-item__codepen
-        background: rgba(230,73,128,1.0)
-
-    &.social-item__github
-        background: rgba(21,170,191,1.0)
-
-    &.social-item__spotify
-        background: rgba(30,215,96,1.0)
-
-    &.social-item__linkedin
-        background: rgba(0,119,181,1.0)
-
-/* Wrapper */
-.wrapper
-    padding: 0 1rem
-    max-width: 24rem
-    margin: 0 auto
-
-/* @media (Larger than mobile [25rem]) */
-@media #{$larger-than-mobile}
-    .wrapper
-        padding-left: 2rem
-        padding-right: 2rem
-        max-width: 50rem
-
-@media (min-width: $breakpoint-lg)
-    .wrapper
-        padding-left: 5rem
-        padding-right: 5rem
-        max-width: 1472px
-
-@media (min-width: $breakpoint-xl)
-    .wrapper
-        padding-left: 10rem
-        padding-right: 10rem
-        max-width: 1472px

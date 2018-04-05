@@ -7,12 +7,14 @@
     <tr>
       <th>Name</th>
       <th>Gender</th>
+      <th>Age</th>
       <th>Email</th>
     </tr>
     <% for (let user of users) { %>
       <tr>
         <td><a href="/users/<%= user.id %>"><%= user.first_name %> <%= user.last_name %></a></td>
         <td><%= user.gender %></td>
+        <td class="age"><%= user.birthday %></td>
         <td><%= user.email %></td>
       </tr>
     <% } %>

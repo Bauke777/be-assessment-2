@@ -1,0 +1,35 @@
+[
+  {
+    "id": "0",
+    "first_name": "Laura",
+    "last_name": "van der Veen",
+    "email": "lauravanderveen@hotmail.com",
+    "password": "laura123!",
+    "profile_picture": "laura.jpg",
+    "gender": "Female",
+    "birthday": "01-01-1994",
+    "description": "Leuke spontane en uitgaande meid, op zoek naar een leuke sportbuddy!"
+  },
+  {
+    "id": "1",
+    "first_name": "Mireille",
+    "last_name": "de Lange",
+    "email": "mdelange@hotmail.com",
+    "password": "mireille!",
+    "profile_picture": "mireille.jpg",
+    "gender": "Female",
+    "birthday": "09-06-1993",
+    "description": "Leuke spontane en uitgaande meid, op zoek naar een leuke sportbuddy!"
+  },
+  {
+    "id": "2",
+    "first_name": "Bauke",
+    "last_name": "Posthuma",
+    "email": "baukeposthuma@gmail.com",
+    "password": "Schaatsen2!",
+    "profile_picture": "",
+    "gender": "Male",
+    "birthday": "1993-10-01",
+    "description": "Dit ben ikzelf"
+  }
+]

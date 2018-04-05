@@ -1,10 +1,11 @@
 'use strict'
 
-var express = require('express')        // require express
-var bodyParser = require('body-parser') // require body parser for forms
-var db = require('./data.json')         // require data from json file
+const express = require('express')        // require express
+const fs = require('fs')                  // require filesystem
+const bodyParser = require('body-parser') // require body parser for forms
+const db = require('./data.json')         // require data from json file
 
-var port = 1950
+const port = 1950
 
 express()
   .set('view engine', 'ejs')
@@ -13,7 +14,7 @@ express()
   .use(bodyParser.urlencoded({
     extended: false
   }))
-  //.use(bodyParser.json())
+  .use(bodyParser.json())
   .get('/users', all)
   .get('/register', form) // Get form for adding new users
   .get('/users/:index', get)
@@ -31,10 +32,10 @@ function all(req, res) {
 
 // Get user's profile
 function get(req, res) {
-  var index = req.params.index
+  const index = req.params.index
 
   if (typeof db[index] === 'undefined') { // Source https://stackoverflow.com/questions/13107855/how-to-check-if-array-element-exists-or-not-in-javascript
-    var result = {code: '404', text: 'Not found'}
+    const result = {code: '404', text: 'Not found'}
     res.status(404).render('error.ejs', result)
   } else {
     res.render('profile.ejs', {
@@ -46,35 +47,62 @@ function get(req, res) {
 
 // If country exists, remove it from the array
 function remove(req, res) {
-  var index = req.params.index
+  const index = req.params.index
 
   if (typeof data[index] === 'undefined') { // Source https://stackoverflow.com/questions/13107855/how-to-check-if-array-element-exists-or-not-in-javascript
-    var result = {code: '404', text: 'Not found'}
+    const result = {code: '404', text: 'Not found'}
     res.status(404).render('error.ejs', result)
   } else {
     data.splice(index, 1)
-    var result = {code: '200', text: 'OK'}
+    const result = {code: '200', text: 'OK'}
     res.status(200).render('error.ejs', result)
   }
 
 }
 
-// Render the form
+// Render the register form
 function form(req, res) {
   res.render('register.ejs')
 }
 
-// Add new country (Didn't had the time to finish this function)
+// Add new user
 function register(req, res) {
-  var newCountry
 
   try {
-    newCountry = data.add(req.body)
-  } catch (err) {
-    var result = {code: '422', text: 'Unprocessable entity'}
-    res.status(422).render('error.ejs', result)
-    return
+    console.log(req.body)
+    // checkForm(req.body)
+
+    var jsonStr = JSON.stringify(db)
+
+    var obj = JSON.parse(jsonStr)
+    obj.push(req.body)
+    jsonStr = JSON.stringify(obj, null, '\t')
+
+    fs.writeFile("data.json", jsonStr, function (err) {
+      if (err) {
+        return next(err)
+      } else {
+        return res.redirect('/users');
+      }
+    })
   }
-  //console.log(newCountry)
-  res.redirect('/')
+  catch (err) {
+    console.log("register error");
+    const result = {code: '422', text: 'Unprocessable entity'}
+    res.status(422).render('error.ejs', result)
+    return err
+  }
 }
+
+// function checkForm(form) {
+//
+//   try {
+//     form.gender = Boolean(form.gender)
+//   }
+//   catch(err) {
+//     const result = {code: '422', text: 'Unprocessable entity'}
+//     res.status(422).render('error.ejs', result)
+//     return
+//   }
+//
+// }
