@@ -3,9 +3,12 @@
 const express = require('express')        // require express
 const fs = require('fs')                  // require filesystem
 const bodyParser = require('body-parser') // require body parser for forms
-const db = require('./data.json')         // require data from json file
+const jsonDB = require('./data.json')     // require data from json file
 
-const port = 1950
+const port = 1950                         // port number for Express
+
+const mongo = require('./database/database.js')         // MongoDB connection
+const User = require('./database/models/user.js')
 
 express()
   .set('view engine', 'ejs')
@@ -15,12 +18,12 @@ express()
     extended: false
   }))
   .use(bodyParser.json())
-  .get('/users', all)
-  .get('/register', form) // Get form for adding new users
-  .get('/users/:index', get)
+  .get('/', all)
+  .get('/singup', singupForm) // Get form for adding new users
+  .get('/users/:index', profile)
   .delete('/:index', remove) // Remove user
-  .post('/', register)
-  .get('/', login)
+  .post('/', singup)
+  .get('/login', login)
   .listen(port)
 
 // Render the register form
@@ -32,24 +35,31 @@ function login(req, res) {
 
 // Get all users
 function all(req, res) {
-  res.render('list.ejs', {
-    title: 'All users',
-    users: db
+  User.find({}, function(err ,users) {
+    console.log(users);
+    res.render('list.ejs', {
+      title: 'All users',
+      users: users
+    })
   })
 }
 
 // Get user's profile
-function get(req, res) {
+function profile(req, res) {
+
   const index = req.params.index
 
-  if (typeof db[index] === 'undefined') { // Source https://stackoverflow.com/questions/13107855/how-to-check-if-array-element-exists-or-not-in-javascript
-    const result = {code: '404', text: 'Not found'}
-    res.status(404).render('error.ejs', result)
-  } else {
-    res.render('profile.ejs', {
-      profile: db[index]
+  User.find({_id: index},
+    function(err ,user) {
+      if (typeof user === 'undefined') {
+        const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+        res.status(404).render('error.ejs', result)
+      } else {
+        res.render('profile.ejs', {
+          profile: user
+        })
+      }
     })
-  }
 
 }
 
@@ -57,11 +67,11 @@ function get(req, res) {
 function remove(req, res) {
   const index = req.params.index
 
-  if (typeof data[index] === 'undefined') { // Source https://stackoverflow.com/questions/13107855/how-to-check-if-array-element-exists-or-not-in-javascript
+  if (typeof jsonDB[index] === 'undefined') { // Source https://stackoverflow.com/questions/13107855/how-to-check-if-array-element-exists-or-not-in-javascript
     const result = {code: '404', text: 'Not found'}
     res.status(404).render('error.ejs', result)
   } else {
-    data.splice(index, 1)
+    jsonDB.splice(index, 1)
     const result = {code: '200', text: 'OK'}
     res.status(200).render('error.ejs', result)
   }
@@ -69,48 +79,77 @@ function remove(req, res) {
 }
 
 // Render the register form
-function form(req, res) {
-  res.render('register.ejs')
+function singupForm(req, res) {
+  res.render('singup.ejs')
 }
 
 // Add new user
-function register(req, res) {
-
-  try {
-    console.log(req.body)
-    // checkForm(req.body)
-
-    var jsonStr = JSON.stringify(db)
-
-    var obj = JSON.parse(jsonStr)
-    obj.push(req.body)
-    jsonStr = JSON.stringify(obj, null, '\t')
-
-    fs.writeFile("data.json", jsonStr, function (err) {
-      if (err) {
-        return next(err)
-      } else {
-        return res.redirect('/users');
-      }
-    })
-  }
-  catch (err) {
-    console.log("register error");
-    const result = {code: '422', text: 'Unprocessable entity'}
-    res.status(422).render('error.ejs', result)
-    return err
-  }
-}
-
-// function checkForm(form) {
+// function register(req, res) {
 //
 //   try {
-//     form.gender = Boolean(form.gender)
+//     console.log(req.body)
+//     // checkForm(req.body)
+//
+//     var jsonStr = JSON.stringify(jsonDB)
+//
+//     var obj = JSON.parse(jsonStr)
+//     obj.push(req.body)
+//     jsonStr = JSON.stringify(obj, null, '\t')
+//
+//     fs.writeFile("data.json", jsonStr, function (err) {
+//       if (err) {
+//         return next(err)
+//       } else {
+//         return res.redirect('/users');
+//       }
+//     })
 //   }
-//   catch(err) {
+//   catch (err) {
+//     console.log("register error");
 //     const result = {code: '422', text: 'Unprocessable entity'}
 //     res.status(422).render('error.ejs', result)
-//     return
+//     return err
 //   }
-//
 // }
+
+// Add new user
+function singup(req, res) {
+
+  // create object for storing the user data
+  let userData = {
+    email: req.body.email,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    password: req.body.password,
+    profile_picture: req.body.profile_picture,
+    gender: req.body.gender,
+    birthday: req.body.birthday,
+    description: req.body.description
+  }
+
+  // check if email and password are filled in
+  if (!userData.email || !userData.password) {
+  res
+    .status(400)
+    .send('Emai or password are missing')
+  return
+  }
+
+  // check if first_name and last_name are filled in
+  if (!userData.first_name || !userData.last_name) {
+  res
+    .status(400)
+    .send('First or last name are missing')
+  return
+  }
+
+  //use schema.create to insert data into the db
+  User.create(userData, function (err, user) {
+    if (err) {
+      console.log(err)
+    } else {
+      return res.redirect('/');
+    }
+  });
+
+}

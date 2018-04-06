@@ -1,7 +1,7 @@
 {
   "name": "date-app",
   "version": "1.0.0",
-  "description": "A dating app for people who love sports and are looking for a sportbuddy or someone to be with",
+  "description": "A simple Node.js dating app for people who love sports and are looking to share their experience",
   "license": "MIT",
   "author": "Bauke Posthuma <baukeposthuma@gmail.com> (http://baukeposthuma.nl)",
   "files": [
@@ -11,9 +11,14 @@
     "body-parser": "^1.18.2",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
+    "mongoose": "^5.0.13",
     "nodemon": "^1.17.3"
   },
   "scripts": {
     "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bauke777/be-assessment-2.git"
   }
 }
