@@ -37,9 +37,11 @@ app.use(session({
 }))
 
 // routes
-app.get('/', all)                 // index
+app.get('/', index)               // index
+app.get('/users', showUsers)      // show a list of all users
 app.get('/login', loginForm)      // render login form
 app.post('/login', login)         // POST login
+app.get('/logout', logout)        // logout, destroy session
 app.get('/signup', signupForm)    // render signup form
 app.post('/signup', signup)       // POST signup
 app.get('/users/:index', profile) // profile page
@@ -47,7 +49,27 @@ app.delete('/:index', remove)     // DELETE user
 app.listen(port)                  // listen on registered port
 
 // index
-function all(req, res) {
+function index(req, res) {
+
+  // show profile if logged in
+  if (req.session.email) {
+    res.redirect('logedin')
+  }
+  else {
+    res.redirect('login')
+  }
+  // User.find({}, function(err ,users) {
+  //   console.log(users);
+  //   res.render('list.ejs', {
+  //     title: 'All users',
+  //     users: users
+  //   })
+  // })
+}
+
+// show a list of all users
+function showUsers(req, res) {
+
   User.find({}, function(err ,users) {
     console.log(users);
     res.render('list.ejs', {
@@ -55,6 +77,7 @@ function all(req, res) {
       users: users
     })
   })
+
 }
 
 // render signup form
@@ -72,26 +95,17 @@ function login(req, res) {
   req.session.password = req.body.password
   res.end('done')
 
-  //authenticate input against database
-  // User.statics.authenticate = function (email, password, callback) {
-  //   User.findOne({ email: email })
-  //     .exec(function (err, user) {
-  //       if (err) {
-  //         return callback(err)
-  //       } else if (!user) {
-  //         var err = new Error('User not found.');
-  //         err.status = 401;
-  //         return callback(err);
-  //       }
-  //       bcrypt.compare(password, user.password, function (err, result) {
-  //         if (result === true) {
-  //           return callback(null, user);
-  //         } else {
-  //           return callback();
-  //         }
-  //       })
-  //     });
-  // }
+}
+
+// logout, destroy session
+function logout(req, res) {
+
+  req.session.destroy(function(err) {
+    if (err) {
+      res.negotiate(err)
+    }
+    res.redirect('/')
+  })
 
 }
 
