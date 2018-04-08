@@ -1,14 +1,29 @@
 <%- include('header.ejs') %>
 
-<% if (profile.profile_picture !== undefined && profile.profile_picture.length !== 0) { %>
-  <img class="profile__img"
-    src="/uploads/<%= profile.profile_picture %>"
-    alt="<%= profile.first_name %>'s profile picture">
-<% } else { %>
-  <img class="profile__img"
-    src="/uploads/profile.png"
-    alt="no profile picture">
-<% } %>
+<header id="profile">
+  <svg width="375px" height="163px" viewBox="0 0 375 163" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+          <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1">
+              <stop stop-color="#FFC623" offset="0%"></stop>
+              <stop stop-color="#FF8C07" offset="100%"></stop>
+          </linearGradient>
+      </defs>
+      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <path d="M0,0 L375,0 L375,150.00447 C187.5,87.207452 187.5,236.354699 0,110.003278 L0,0 Z" id="Rectangle-2-Copy" fill="url(#linearGradient-1)"></path>
+      </g>
+  </svg>
+
+  <% if (profile.profile_picture !== undefined && profile.profile_picture.length !== 0) { %>
+    <img class="profile__img"
+      src="/uploads/<%= profile.profile_picture %>"
+      alt="<%= profile.first_name %>'s profile picture">
+  <% } else { %>
+    <img class="profile__img"
+      src="/uploads/profile.png"
+      alt="no profile picture">
+  <% } %>
+</header>
+<main>
 
 <h1><%= profile.first_name %> <%= profile.last_name %></h1>
 <p><%= profile.description %></p>

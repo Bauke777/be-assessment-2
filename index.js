@@ -39,12 +39,13 @@ app.use(session({
 // routes
 app.get('/', index)               // index
 app.get('/users', showUsers)      // show a list of all users
+app.get('/profile', profile)      // show a list of all users
 app.get('/login', loginForm)      // render login form
 app.post('/login', login)         // POST login
 app.get('/logout', logout)        // logout, destroy session
 app.get('/signup', signupForm)    // render signup form
 app.post('/signup', signup)       // POST signup
-app.get('/users/:index', profile) // profile page
+app.get('/users/:index', getUser) // user profile page
 app.delete('/:index', remove)     // DELETE user
 app.listen(port)                  // listen on registered port
 
@@ -53,18 +54,12 @@ function index(req, res) {
 
   // show profile if logged in
   if (req.session.email) {
-    res.redirect('logedin')
+    res.redirect('/profile')
   }
   else {
-    res.redirect('login')
+    res.redirect('/login')
   }
-  // User.find({}, function(err ,users) {
-  //   console.log(users);
-  //   res.render('list.ejs', {
-  //     title: 'All users',
-  //     users: users
-  //   })
-  // })
+
 }
 
 // show a list of all users
@@ -77,6 +72,31 @@ function showUsers(req, res) {
       users: users
     })
   })
+
+}
+
+// index
+function profile(req, res) {
+
+  // show profile if logged in
+  if (req.session.email) {
+
+    User.find({ email: req.session.email }, function(err ,user) {
+      console.log(user);
+      if (typeof user === 'undefined') {
+        const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+        res.status(404).render('error.ejs', result)
+      } else {
+        res.render('profile.ejs', {
+          profile: user[0]
+        })
+      }
+    })
+  }
+  // redirect to login if not logged in
+  else {
+    res.redirect('/login')
+  }
 
 }
 
@@ -93,7 +113,7 @@ function login(req, res) {
   // create object for storing the user data
   req.session.email = req.body.email
   req.session.password = req.body.password
-  res.end('done')
+  res.redirect('/profile')
 
 }
 
@@ -110,24 +130,23 @@ function logout(req, res) {
 }
 
 // Get user's profile
-function profile(req, res) {
+function getUser(req, res) {
 
   const index = req.params.index
 
   console.log(index);
 
-  User.find({ _id: index },
-    function(err ,user) {
-      console.log(user);
-      if (typeof user === 'undefined') {
-        const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
-        res.status(404).render('error.ejs', result)
-      } else {
-        res.render('profile.ejs', {
-          profile: user[0]
-        })
-      }
-    })
+  User.find({ _id: index }, function(err ,user) {
+    console.log(user);
+    if (typeof user === 'undefined') {
+      const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+      res.status(404).render('error.ejs', result)
+    } else {
+      res.render('profile.ejs', {
+        profile: user[0]
+      })
+    }
+  })
 
 }
 
