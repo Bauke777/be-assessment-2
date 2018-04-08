@@ -1,0 +1,40 @@
+<%- include('header.ejs') %>
+
+<header></header>
+
+<main>
+
+  <h1><%= title %></h1>
+
+  <form action="/edit" method="POST">
+
+    <label for="email">Email adress</label>
+    <input type="email" name="email" placeholder="Your email adress" value="<%= profile.email %>" required>
+
+    <label for="first_name">First name</label>
+    <input type="text" name="first_name" placeholder="Your first name" value="<%= profile.first_name %>" required>
+
+    <label for="last_name">Last name</label>
+    <input type="text" name="last_name" placeholder="Your last name" value="<%= profile.last_name %>" required>
+
+    <label for="birthday">Birthday</label>
+    <input type="date" name="birthday" placeholder="Your birthday" value="<%= profile.birthday %>">
+
+    <label for="description">Description</label>
+    <textarea name="description" rows="3" maxlength="200" cols="60" placeholder="About yourself"><%= profile.description %></textarea>
+
+    <fieldset>
+      <legend>Looking for</legend>
+      <label for="gender">Gender</label>
+      <input type="radio" name="lf_gender" value="Male" required>Male<br>
+      <input type="radio" name="lf_gender" value="Female" required>Female<br>
+      <input type="radio" name="lf_gender" value="Other" required>Other
+    </fieldset>
+
+    <button type="submit">Update</button>
+
+  </form>
+
+</main>
+
+<%- include('footer.ejs') %>

@@ -37,18 +37,20 @@ app.use(session({
 }))
 
 // routes
-app.get('/', index)               // index
-app.get('/users', showUsers)      // show a list of all users
-app.get('/profile', profile)      // show a list of all users
-app.get('/matches', matches)      // show all matches
-app.get('/login', loginForm)      // render login form
-app.post('/login', login)         // POST login
-app.get('/logout', logout)        // logout, destroy session
-app.get('/signup', signupForm)    // render signup form
-app.post('/signup', signup)       // POST signup
-app.get('/users/:index', getUser) // user profile page
-app.delete('/:index', remove)     // DELETE user
-app.listen(port)                  // listen on registered port
+app.get('/', index)                   // index
+app.get('/users', showUsers)          // show a list of all users
+app.get('/profile', profile)          // show users own profile
+app.get('/edit', editProfileForm)     // edit users own profile
+app.post('/edit', editProfile)     // edit users own profile
+app.get('/matches', matches)          // show all matches
+app.get('/login', loginForm)          // render login form
+app.post('/login', login)             // POST login
+app.get('/logout', logout)            // logout, destroy session
+app.get('/signup', signupForm)        // render signup form
+app.post('/signup', signup)           // POST signup
+app.get('/users/:index', getUser)     // user profile page
+app.delete('/:index', remove)         // DELETE user
+app.listen(port)                      // listen on registered port
 
 // index
 function index(req, res) {
@@ -76,7 +78,7 @@ function showUsers(req, res) {
 
 }
 
-// index
+// show users own profile
 function profile(req, res) {
 
   // show profile if logged in
@@ -99,6 +101,130 @@ function profile(req, res) {
   else {
     res.redirect('/login')
   }
+
+}
+
+// edit users own profile
+function editProfileForm(req, res) {
+
+  // show profile if logged in
+  if (req.session.email) {
+
+    User.find({ email: req.session.email }, function(err ,user) {
+      res.render('edit-profile.ejs', {
+        title: 'Edit your profile',
+        profile: user[0]
+      })
+    })
+
+  }
+  // redirect to login if not logged in
+  else {
+    res.redirect('/login')
+  }
+
+}
+
+// GET edit users own profile
+function editProfile(req, res) {
+
+  // show profile if logged in
+  if (req.session.email) {
+
+    // create object for storing the user data
+    let userData = {
+      email: req.body.email,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      birthday: req.body.birthday,
+      description: req.body.description,
+      looking_for: {
+        gender: req.body.lf_gender
+      }
+    }
+
+    // check if email and password are filled in
+    if (!userData.email) {
+      res.status(400).send('Emai is missing')
+      return
+    }
+
+    // check if first_name and last_name are filled in
+    if (!userData.first_name || !userData.last_name) {
+      res.status(400).send('First or last name are missing')
+    }
+
+    //use schema.create to insert data into the db
+    User.findOneAndUpdate({'email': req.session.email}, userData, {upsert:true}, function(err, doc){
+      if (err) {
+        res.status(400).send('Can not update profile.')
+      }
+      else {
+        res.redirect('/profile')
+      }
+    });
+
+  }
+  else {
+    res.redirect('/login')
+  }
+
+  // User.update(userData, function (err, user) {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //
+  //     res.redirect('/');
+  //   }
+  // });
+
+
+
+}
+
+// Add new user
+function signup(req, res) {
+
+  // create object for storing the user data
+  let userData = {
+    email: req.body.email,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    password: req.body.password,
+    profile_picture: req.body.profile_picture,
+    gender: req.body.gender,
+    birthday: req.body.birthday,
+    description: req.body.description
+  }
+
+  // check if email and password are filled in
+  if (!userData.email || !userData.password) {
+    res.status(400).send('Emai or password are missing')
+    return
+  }
+
+  const min = 6
+  const max = 50
+
+  if (userData.password.length < min || userData.password.length > max) {
+    res.status(400).send('Password must be between ' + min + ' and ' + max + ' characters')
+    return
+  }
+
+  // check if first_name and last_name are filled in
+  if (!userData.first_name || !userData.last_name) {
+    res.status(400).send('First or last name are missing')
+  }
+
+  //use schema.create to insert data into the db
+  User.create(userData, function (err, user) {
+    if (err) {
+      console.log(err)
+    } else {
+
+      res.redirect('/');
+    }
+  });
 
 }
 
@@ -285,7 +411,5 @@ function signup(req, res) {
       res.redirect('/');
     }
   });
-
-
 
 }
