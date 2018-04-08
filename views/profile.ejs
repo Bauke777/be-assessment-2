@@ -27,7 +27,7 @@
     <a class="profile__icon left logout" href="/logout">Logout</a>
     <a class="profile__icon right edit" href="/edit">Edit profile</a>
   <% } else { %>
-    <a class="profile__icon left logout" href="/logout">Logout</a>
+    
   <% } %>
 
 </header>
@@ -43,6 +43,9 @@
   <dd class="age"><%= profile.birthday %></dd>
 </dl>
 
-<a href="/matches" class="button">Show my matches</a>
+<% if ( self == true) { %>
+  <a href="/matches" class="button">Show my matches</a>
+<% } %>
+
 
 <%- include('footer.ejs') %>

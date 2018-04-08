@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 
 // register sessions
 app.use(session({
-  secret: 'work hard',
+  secret: 'VBGdKyb0dU/crRcBjrROh3LukCRbA2mwzK/FNVbSMMK9c5JGY5',
   resave: true,
   saveUninitialized: false
 }))
@@ -107,13 +107,26 @@ function matches(req, res) {
 
   // show profile if logged in
   if (req.session.email) {
-    User.find({}, function(err ,users) {
-      console.log(users);
-      res.render('matches.ejs', {
-        title: 'My matches',
-        users: users
+
+    // get own profile info
+    User.find({email: req.session.email}, function(err, user) {
+
+      var gender = user[0].looking_for.gender
+
+      User.find({gender: gender}, function(err, users) {
+
+        console.log(gender)
+
+        res.render('matches.ejs', {
+          title: 'My matches',
+          users: users
+        })
+
       })
+
     })
+
+
   }
   // redirect to login if not logged in
   else {

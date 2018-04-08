@@ -37,6 +37,9 @@ const UserSchema = new mongoose.Schema({
   description: {
     type: String
   },
+  looking_for: {
+    gender: String
+  }
 });
 
 //hashing a password before saving it to the database

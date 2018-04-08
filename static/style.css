@@ -258,3 +258,22 @@ header#profile {
   .profile__icon.logout {
     background: url("img/icon-logout.png");
     background-size: contain; }
+
+/***********/
+/* Matches */
+/***********/
+main#matches ul {
+  list-style: none; }
+  main#matches ul li {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    border-radius: .5rem;
+    overflow: hidden;
+    background-color: rgba(200, 200, 200, 0.1);
+    margin-bottom: 1rem; }
+    main#matches ul li img {
+      display: block; }
+    main#matches ul li h3 {
+      padding: .5ch 1ch;
+      margin: 0;
+      font-weight: 400;
+      color: #434b5f; }
