@@ -1,9 +1,14 @@
 <%- include('header.ejs') %>
 
-<img class="profile__img"
-  src="/uploads/<%= profile.profile_picture %>"
-  alt="<%= profile.first_name %>'s profile picture"
->
+<% if (profile.profile_picture !== undefined && profile.profile_picture.length !== 0) { %>
+  <img class="profile__img"
+    src="/uploads/<%= profile.profile_picture %>"
+    alt="<%= profile.first_name %>'s profile picture">
+<% } else { %>
+  <img class="profile__img"
+    src="/uploads/profile.png"
+    alt="no profile picture">
+<% } %>
 
 <h1><%= profile.first_name %> <%= profile.last_name %></h1>
 <p><%= profile.description %></p>
@@ -14,7 +19,5 @@
   <dt>Age</dt>
   <dd class="age"><%= profile.birthday %></dd>
 </dl>
-
-
 
 <%- include('footer.ejs') %>

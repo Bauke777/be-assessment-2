@@ -1,39 +1,52 @@
 'use strict'
 
-const express = require('express')        // require express
-const fs = require('fs')                  // require filesystem
-const bodyParser = require('body-parser') // require body parser for forms
-const jsonDB = require('./data.json')     // require data from json file
+// express
+const express = require('express')            // require express
+const port = 1950                             // port number for Express
+const app = express()                         // register express as app
 
-const port = 1950                         // port number for Express
+// packages
+const session = require('express-session')    // package for sessions
+const bodyParser = require('body-parser')     // require body parser for forms
+const fs = require('fs')                      // require filesystem
+const jsonDB = require('./data.json')         // require data from json file
+// const bcrypt = require('bcrypt')              // hashing with bcrypt
 
-const mongo = require('./database/database.js')         // MongoDB connection
-const User = require('./database/models/user.js')
+// mongodb database
+const mongo = require('./database/database.js')   // mongoDB connection
+const User = require('./database/models/user.js') // mongoose models
 
-express()
-  .set('view engine', 'ejs')
-  .set('views', 'views')
-  .use(express.static('static'))
-  .use(bodyParser.urlencoded({
-    extended: false
-  }))
-  .use(bodyParser.json())
-  .get('/', all)
-  .get('/singup', singupForm) // Get form for adding new users
-  .get('/users/:index', profile)
-  .delete('/:index', remove) // Remove user
-  .post('/', singup)
-  .get('/login', login)
-  .listen(port)
+// set the default view folder
+app.set('view engine', 'ejs')
+app.set('views', 'views')
 
-// Render the register form
-function login(req, res) {
-  res.render('login.ejs', {
-    title: 'Login'
-  })
-}
+// middleware function for serving static files like css, images, js etc.
+app.use(express.static('static'))
 
-// Get all users
+// bodyparser for recieving form data
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+
+// register sessions
+app.use(session({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: false
+}))
+
+// routes
+app.get('/', all)                 // index
+app.get('/login', loginForm)      // render login form
+app.post('/login', login)         // POST login
+app.get('/signup', signupForm)    // render signup form
+app.post('/signup', signup)       // POST signup
+app.get('/users/:index', profile) // profile page
+app.delete('/:index', remove)     // DELETE user
+app.listen(port)                  // listen on registered port
+
+// index
 function all(req, res) {
   User.find({}, function(err ,users) {
     console.log(users);
@@ -44,19 +57,60 @@ function all(req, res) {
   })
 }
 
+// render signup form
+function loginForm(req, res) {
+  res.render('login.ejs', {
+    title: 'Login'
+  })
+}
+
+// POST login
+function login(req, res) {
+
+  // create object for storing the user data
+  req.session.email = req.body.email
+  req.session.password = req.body.password
+  res.end('done')
+
+  //authenticate input against database
+  // User.statics.authenticate = function (email, password, callback) {
+  //   User.findOne({ email: email })
+  //     .exec(function (err, user) {
+  //       if (err) {
+  //         return callback(err)
+  //       } else if (!user) {
+  //         var err = new Error('User not found.');
+  //         err.status = 401;
+  //         return callback(err);
+  //       }
+  //       bcrypt.compare(password, user.password, function (err, result) {
+  //         if (result === true) {
+  //           return callback(null, user);
+  //         } else {
+  //           return callback();
+  //         }
+  //       })
+  //     });
+  // }
+
+}
+
 // Get user's profile
 function profile(req, res) {
 
   const index = req.params.index
 
-  User.find({_id: index},
+  console.log(index);
+
+  User.find({ _id: index },
     function(err ,user) {
+      console.log(user);
       if (typeof user === 'undefined') {
         const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
         res.status(404).render('error.ejs', result)
       } else {
         res.render('profile.ejs', {
-          profile: user
+          profile: user[0]
         })
       }
     })
@@ -79,8 +133,10 @@ function remove(req, res) {
 }
 
 // Render the register form
-function singupForm(req, res) {
-  res.render('singup.ejs')
+function signupForm(req, res) {
+  res.render('signup.ejs', {
+    title: "Sign Up"
+  })
 }
 
 // Add new user
@@ -113,7 +169,7 @@ function singupForm(req, res) {
 // }
 
 // Add new user
-function singup(req, res) {
+function signup(req, res) {
 
   // create object for storing the user data
   let userData = {
@@ -129,18 +185,21 @@ function singup(req, res) {
 
   // check if email and password are filled in
   if (!userData.email || !userData.password) {
-  res
-    .status(400)
-    .send('Emai or password are missing')
-  return
+    res.status(400).send('Emai or password are missing')
+    return
+  }
+
+  const min = 6
+  const max = 50
+
+  if (userData.password.length < min || userData.password.length > max) {
+    res.status(400).send('Password must be between ' + min + ' and ' + max + ' characters')
+    return
   }
 
   // check if first_name and last_name are filled in
   if (!userData.first_name || !userData.last_name) {
-  res
-    .status(400)
-    .send('First or last name are missing')
-  return
+    res.status(400).send('First or last name are missing')
   }
 
   //use schema.create to insert data into the db
@@ -148,8 +207,11 @@ function singup(req, res) {
     if (err) {
       console.log(err)
     } else {
-      return res.redirect('/');
+
+      res.redirect('/');
     }
   });
+
+
 
 }

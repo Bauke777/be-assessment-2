@@ -1,8 +1,8 @@
 <%- include('header.ejs') %>
 
-<h1>Signup</h1>
+<h1><%= title %></h1>
 
-<form action="/" method="POST">
+<form action="/signup" method="POST">
 
     <label for="email">Email adress</label>
     <input type="email" name="email" placeholder="Your email adress" required>
@@ -30,7 +30,7 @@
     <label for="description">Description</label>
     <textarea name="description" rows="3" maxlength="200" cols="60" placeholder="About yourself"></textarea>
 
-    <button type="submit">Register</button>
+    <button type="submit">Sign Up</button>
 
 </form>
 

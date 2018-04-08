@@ -2,7 +2,7 @@
 
 <h1><%= title %></h1>
 
-<form action="/" method="POST">
+<form action="/login" method="POST">
 
     <label for="email">Email adress</label>
     <input type="email" name="email" placeholder="Your email adress" required>
@@ -11,6 +11,8 @@
     <input type="password" name="password" placeholder="Your password" required>
 
     <button type="submit">Login</button>
+
+    <p>I don't have an account <a href="/signup">Sign Up</a></p>
 
 </form>
 

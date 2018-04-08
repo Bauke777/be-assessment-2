@@ -1,27 +1,21 @@
 /* eslint-env browser */
 
-var win = window
-var doc = document
-var $node = doc.getElementById('remove')
+let date = document.querySelectorAll('.age')
 
-if ($node) {
-  $node.addEventListener('click', onremove)
-}
-
-function onremove() {
-  fetch(doc.location.pathname, {method: 'delete'})
-    .then(onresponse)
-    .then(onload, onfail)
-}
-
-function onresponse(res) {
-  if (res.ok) {
-    win.location = '/'
-  } else {
-    onfail()
+if (date) {
+  for (let elm of date) {
+    if (!isNaN(getAge(elm.textContent))) {
+      elm.innerHTML = getAge(elm.textContent)
+    } else {
+      elm.innerHTML = ""
+    }
   }
 }
 
-function onfail() {
-  throw new Error('Could not delete!')
+function getAge(dateString) {
+  let birthdate = new Date(dateString);
+  let current = new Date();
+  let difference = current-birthdate;
+  let age = Math.floor(difference/31557600000);
+  return age
 }
