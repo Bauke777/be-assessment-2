@@ -1,0 +1,31 @@
+<%- include('header.ejs') %>
+
+<header>
+</header>
+
+<h1><%= title %></h1>
+
+<% if (typeof users !== undefined && users.length !== 0) { %>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Age</th>
+      <th>Email</th>
+    </tr>
+    <% for (let user of users) { %>
+      <tr>
+        <td><a href="/users/<%= user.id %>"><%= user.first_name %> <%= user.last_name %></a></td>
+        <td><%= user.gender %></td>
+        <td class="age"><%= user.birthday %></td>
+        <td><%= user.email %></td>
+      </tr>
+    <% } %>
+  </table>
+<% } else { %>
+  <p>No users yet.</p>
+<% } %>
+
+<p><a href="/signup">Add a new user</a></p>
+
+<%- include('footer.ejs') %>

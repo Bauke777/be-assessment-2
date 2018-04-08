@@ -72,6 +72,10 @@ th
   font-weight: $bold
 
 /* Description list */
+dl
+  margin-bottom: 1rem
+  column-count: 2
+
 dt
   font-weight: $bold
   float: left
@@ -94,11 +98,13 @@ button[type="submit"],
 button[type="reset"],
 input[type="submit"],
 input[type="reset"]
-    border: 1px solid lighten($gray, 50%)
-    border-radius: 3px
-    padding: .6875rem 1.2rem
-    font: $medium .8rem / 150% $font-stack
-    color: $gray
+    min-width: 12.5rem
+    border: none
+    background-color: $orange
+    border-radius: 10rem
+    padding: 1rem 3rem
+    font: $bold .8rem / 150% $font-stack
+    color: white
     letter-spacing: .035rem
     text-decoration: none
     transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
@@ -106,20 +112,10 @@ input[type="reset"]
     line-height: 1.5rem
     text-transform: uppercase
     text-align: center
-    margin-bottom: 1rem
     display: block
 
     &:hover
-        border-color: $gray
-
-    &.button-primary
-        background: $secondary-color
-        border-color: $secondary-color
-        color: $white
-
-        &:hover
-            background: lighten($secondary-color, 10%)
-            border-color: lighten($secondary-color, 10%)
+        border-color: $dark-orange
 
 /* Forms */
 input[type="email"],

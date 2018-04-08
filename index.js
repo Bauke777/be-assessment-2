@@ -40,6 +40,7 @@ app.use(session({
 app.get('/', index)               // index
 app.get('/users', showUsers)      // show a list of all users
 app.get('/profile', profile)      // show a list of all users
+app.get('/matches', matches)      // show all matches
 app.get('/login', loginForm)      // render login form
 app.post('/login', login)         // POST login
 app.get('/logout', logout)        // logout, destroy session
@@ -88,9 +89,30 @@ function profile(req, res) {
         res.status(404).render('error.ejs', result)
       } else {
         res.render('profile.ejs', {
-          profile: user[0]
+          profile: user[0],
+          self: true
         })
       }
+    })
+  }
+  // redirect to login if not logged in
+  else {
+    res.redirect('/login')
+  }
+
+}
+
+// show a list of all users
+function matches(req, res) {
+
+  // show profile if logged in
+  if (req.session.email) {
+    User.find({}, function(err ,users) {
+      console.log(users);
+      res.render('matches.ejs', {
+        title: 'My matches',
+        users: users
+      })
     })
   }
   // redirect to login if not logged in
@@ -132,21 +154,27 @@ function logout(req, res) {
 // Get user's profile
 function getUser(req, res) {
 
-  const index = req.params.index
+  const id = req.params.index
 
-  console.log(index);
+  if (req.session.email) {
 
-  User.find({ _id: index }, function(err ,user) {
-    console.log(user);
-    if (typeof user === 'undefined') {
-      const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
-      res.status(404).render('error.ejs', result)
-    } else {
-      res.render('profile.ejs', {
-        profile: user[0]
-      })
-    }
-  })
+    User.find({ _id: id }, function(err ,user) {
+      console.log(user);
+      if (typeof user === 'undefined') {
+        const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+        res.status(404).render('error.ejs', result)
+      } else {
+        res.render('profile.ejs', {
+          profile: user[0],
+          self: false
+        })
+      }
+    })
+  }
+  // redirect to login if not logged in
+  else {
+    res.redirect('/login')
+  }
 
 }
 

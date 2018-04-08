@@ -22,6 +22,14 @@
       src="/uploads/profile.png"
       alt="no profile picture">
   <% } %>
+
+  <% if ( self == true) { %>
+    <a class="profile__icon left logout" href="/logout">Logout</a>
+    <a class="profile__icon right edit" href="/edit">Edit profile</a>
+  <% } else { %>
+    <a class="profile__icon left logout" href="/logout">Logout</a>
+  <% } %>
+
 </header>
 <main>
 
@@ -34,5 +42,7 @@
   <dt>Age</dt>
   <dd class="age"><%= profile.birthday %></dd>
 </dl>
+
+<a href="/matches" class="button">Show my matches</a>
 
 <%- include('footer.ejs') %>

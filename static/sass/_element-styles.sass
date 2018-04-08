@@ -39,3 +39,28 @@ header#profile
   box-shadow: 0 1px 2px 0 transparentize($black, .8)
   display: flex
   margin: 5rem auto 1.25rem auto
+
+.profile__icon
+  position: absolute
+  top: 1.25rem
+  height: 1.5rem
+  width: 1.5rem
+  display: block
+  text-indent: -99999px
+  text-decoration: none
+  border: 0
+  overflow: visible
+
+  &.left
+    left: 1.25rem
+
+  &.right
+    right: 1.25rem
+
+  &.edit
+    background: url('img/icon-edit.png')
+    background-size: contain
+
+  &.logout
+    background: url('img/icon-logout.png')
+    background-size: contain
