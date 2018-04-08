@@ -1,8 +1,10 @@
 <%- include('header.ejs') %>
 
-<h1><%= title %></h1>
+<main>
 
-<form action="/signup" method="POST">
+  <h1><%= title %></h1>
+
+  <form action="/signup" method="POST">
 
     <label for="email">Email adress</label>
     <input type="email" name="email" placeholder="Your email adress" required>
@@ -30,8 +32,20 @@
     <label for="description">Description</label>
     <textarea name="description" rows="3" maxlength="200" cols="60" placeholder="About yourself"></textarea>
 
+    <fieldset>
+      <legend>Sports you like</legend>
+      <input type="checkbox" name="sports" value="tennis">Tennis<br>
+      <input type="checkbox" name="sports" value="soccer">Soccer<br>
+      <input type="checkbox" name="sports" value="bouldering">Bouldering<br>
+      <input type="checkbox" name="sports" value="archery">Archery<br>
+      <input type="checkbox" name="sports" value="hockey">Hockey<br>
+      <input type="checkbox" name="sports" value="ice skating">Ice skating<br>
+    </fieldset>
+
     <button type="submit">Sign Up</button>
 
-</form>
+  </form>
+
+</main>
 
 <%- include('footer.ejs') %>
