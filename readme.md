@@ -2,12 +2,17 @@
 
 A simple application for singles who love sport and want to meet up with other people.
 
-## Table of content
-* Technology
+## Install
 
-### Technology
+'git clone https://github.com/Bauke777/be-assessment-2.git'
 
-#### Development Environment
+'cd be-assessment-2'
+
+'node .'
+
+## Technology
+
+### Development Environment
 
 In this project I will use
 
@@ -16,7 +21,7 @@ In this project I will use
 * Express (JS framework)
 * MongoDB (Database)
 
-#### Dependencies
+### Dependencies
 
 Following packages are used
 
