@@ -9,7 +9,6 @@ const app = express()                         // register express as app
 const session = require('express-session')    // package for sessions
 const bodyParser = require('body-parser')     // require body parser for forms
 const fs = require('fs')                      // require filesystem
-const jsonDB = require('./data.json')         // require data from json file
 // const bcrypt = require('bcrypt')              // hashing with bcrypt
 
 // mongodb database
@@ -49,7 +48,7 @@ app.get('/logout', logout)            // logout, destroy session
 app.get('/signup', signupForm)        // render signup form
 app.post('/signup', signup)           // POST signup
 app.get('/users/:index', getUser)     // user profile page
-app.delete('/:index', remove)         // DELETE user
+app.delete('/users/:index', remove)         // DELETE user
 app.listen(port)                      // listen on registered port
 
 // index
@@ -319,17 +318,14 @@ function getUser(req, res) {
 
 // If country exists, remove it from the array
 function remove(req, res) {
-  const index = req.params.index
+  const id = req.params.index
 
-  if (typeof jsonDB[index] === 'undefined') { // Source https://stackoverflow.com/questions/13107855/how-to-check-if-array-element-exists-or-not-in-javascript
-    const result = {code: '404', text: 'Not found'}
-    res.status(404).render('error.ejs', result)
-  } else {
-    jsonDB.splice(index, 1)
-    const result = {code: '200', text: 'OK'}
-    res.status(200).render('error.ejs', result)
-  }
-
+  User.remove({ _id: id }, function(err) {
+    if (err) {
+      res.negotiate(err)
+    }
+    res.redirect('/')
+  });
 }
 
 // Render the register form
@@ -338,35 +334,6 @@ function signupForm(req, res) {
     title: "Sign Up"
   })
 }
-
-// Add new user
-// function register(req, res) {
-//
-//   try {
-//     console.log(req.body)
-//     // checkForm(req.body)
-//
-//     var jsonStr = JSON.stringify(jsonDB)
-//
-//     var obj = JSON.parse(jsonStr)
-//     obj.push(req.body)
-//     jsonStr = JSON.stringify(obj, null, '\t')
-//
-//     fs.writeFile("data.json", jsonStr, function (err) {
-//       if (err) {
-//         return next(err)
-//       } else {
-//         return res.redirect('/users');
-//       }
-//     })
-//   }
-//   catch (err) {
-//     console.log("register error");
-//     const result = {code: '422', text: 'Unprocessable entity'}
-//     res.status(422).render('error.ejs', result)
-//     return err
-//   }
-// }
 
 // Add new user
 function signup(req, res) {
