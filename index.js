@@ -9,7 +9,7 @@ const app = express()                         // register express as app
 const session = require('express-session')    // package for sessions
 const bodyParser = require('body-parser')     // require body parser for forms
 const fs = require('fs')                      // require filesystem
-// const bcrypt = require('bcrypt')              // hashing with bcrypt
+const bcrypt = require('bcrypt')              // hashing with bcrypt
 
 // mongodb database
 const mongo = require('./database/database.js')   // mongoDB connection
@@ -68,7 +68,7 @@ function index(req, res) {
 function showUsers(req, res) {
 
   User.find({}, function(err ,users) {
-    console.log(users);
+    console.log(users)
     res.render('list.ejs', {
       title: 'All users',
       users: users
@@ -84,7 +84,7 @@ function profile(req, res) {
   if (req.session.email) {
 
     User.find({ email: req.session.email }, function(err ,user) {
-      console.log(user);
+      console.log(user)
       if (typeof user === 'undefined') {
         const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
         res.status(404).render('error.ejs', result)
@@ -161,69 +161,12 @@ function editProfile(req, res) {
       else {
         res.redirect('/profile')
       }
-    });
+    })
 
   }
   else {
     res.redirect('/login')
   }
-
-  // User.update(userData, function (err, user) {
-  //   if (err) {
-  //     console.log(err)
-  //   } else {
-  //
-  //     res.redirect('/');
-  //   }
-  // });
-
-
-
-}
-
-// Add new user
-function signup(req, res) {
-
-  // create object for storing the user data
-  let userData = {
-    email: req.body.email,
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    password: req.body.password,
-    profile_picture: req.body.profile_picture,
-    gender: req.body.gender,
-    birthday: req.body.birthday,
-    description: req.body.description
-  }
-
-  // check if email and password are filled in
-  if (!userData.email || !userData.password) {
-    res.status(400).send('Emai or password are missing')
-    return
-  }
-
-  const min = 6
-  const max = 50
-
-  if (userData.password.length < min || userData.password.length > max) {
-    res.status(400).send('Password must be between ' + min + ' and ' + max + ' characters')
-    return
-  }
-
-  // check if first_name and last_name are filled in
-  if (!userData.first_name || !userData.last_name) {
-    res.status(400).send('First or last name are missing')
-  }
-
-  //use schema.create to insert data into the db
-  User.create(userData, function (err, user) {
-    if (err) {
-      console.log(err)
-    } else {
-
-      res.redirect('/');
-    }
-  });
 
 }
 
@@ -260,7 +203,7 @@ function matches(req, res) {
 
 }
 
-// render signup form
+// render login form
 function loginForm(req, res) {
   res.render('login.ejs', {
     title: 'Login'
@@ -270,7 +213,38 @@ function loginForm(req, res) {
 // POST login
 function login(req, res) {
 
-  // create object for storing the user data
+  // bcrypt.compare(password, user.password, function (err, result) {
+  //   if (result === true) {
+  //     return callback(null, user)
+  //   } else {
+  //     return callback()
+  //   }
+  // })
+
+  //
+  // User.find({email: req.session.email}, (error, user) => {
+  //   if (error || !user) {
+  //     var err = new Error('Wrong email or password.')
+  //     err.status = 401
+  //     return next(err)
+  //   } else {
+  //     console.log('req: ', password)
+  //     console.log('db: ', user.password)
+  //     bcrypt.compare(req.session.password, user.password, function (err, result) {
+  //       if (result === true) {
+  //         req.session.userId = user._id
+  //         req.session.email = req.body.email
+  //         req.session.password = req.body.password
+  //         return res.redirect('/profile')
+  //       } else {
+  //         var err = new Error('Wrong email or password.')
+  //         err.status = 401
+  //         return next(err)
+  //       }
+  //     })
+  //   }
+  // })
+
   req.session.email = req.body.email
   req.session.password = req.body.password
   res.redirect('/profile')
@@ -297,7 +271,7 @@ function getUser(req, res) {
   if (req.session.email) {
 
     User.find({ _id: id }, function(err ,user) {
-      console.log(user);
+      console.log(user)
       if (typeof user === 'undefined') {
         const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
         res.status(404).render('error.ejs', result)
@@ -325,7 +299,7 @@ function remove(req, res) {
       res.negotiate(err)
     }
     res.redirect('/')
-  });
+  })
 }
 
 // Render the register form
@@ -374,9 +348,10 @@ function signup(req, res) {
     if (err) {
       console.log(err)
     } else {
-
-      res.redirect('/');
+      req.session.email = req.body.email
+      req.session.password = req.body.password
+      res.redirect('/profile')
     }
-  });
+  })
 
 }
