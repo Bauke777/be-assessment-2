@@ -4,11 +4,11 @@ A simple application for singles who love sport and want to meet up with other p
 
 ## Install
 
-'git clone https://github.com/Bauke777/be-assessment-2.git'
+`git clone https://github.com/Bauke777/be-assessment-2.git`
 
-'cd be-assessment-2'
+`cd be-assessment-2`
 
-'node .'
+`node .`
 
 ## Technology
 
