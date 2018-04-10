@@ -10,6 +10,8 @@ const session = require('express-session')    // package for sessions
 const bodyParser = require('body-parser')     // require body parser for forms
 const fs = require('fs')                      // require filesystem
 const bcrypt = require('bcrypt')              // hashing with bcrypt
+const multer = require('multer')              // multer for uploading images in forms
+const upload = multer({ dest: 'uploads/' })   // multer upload location
 
 // mongodb database
 const mongo = require('./database/database.js')   // mongoDB connection
@@ -40,15 +42,15 @@ app.get('/', index)                   // index
 app.get('/users', showUsers)          // show a list of all users
 app.get('/profile', profile)          // show users own profile
 app.get('/edit', editProfileForm)     // edit users own profile
-app.post('/edit', editProfile)     // edit users own profile
+app.post('/edit', editProfile)        // edit users own profile
 app.get('/matches', matches)          // show all matches
 app.get('/login', loginForm)          // render login form
 app.post('/login', login)             // POST login
 app.get('/logout', logout)            // logout, destroy session
 app.get('/signup', signupForm)        // render signup form
-app.post('/signup', signup)           // POST signup
+app.post('/signup', upload.single('profile_picture'), signup) // POST signup
 app.get('/users/:index', getUser)     // user profile page
-app.delete('/users/:index', remove)         // DELETE user
+app.delete('/users/:index', remove)   // DELETE user
 app.listen(port)                      // listen on registered port
 
 // index
@@ -318,7 +320,7 @@ function signup(req, res) {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     password: req.body.password,
-    profile_picture: req.body.profile_picture,
+    profile_picture: req.file,
     gender: req.body.gender,
     birthday: req.body.birthday,
     description: req.body.description
