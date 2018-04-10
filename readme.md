@@ -8,6 +8,8 @@ A simple application for singles who love sport and want to meet up with other p
 
 `cd be-assessment-2`
 
+`npm install`
+
 `node .`
 
 ## Technology
