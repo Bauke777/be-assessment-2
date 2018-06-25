@@ -1,0 +1,326 @@
+/*
+/* Copyright 2018, Bauke Posthuma
+/* www.baukeposthuma.nl
+/*
+
+/* Base styles
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+body
+  color: #434b5f
+  background: white
+  font: 400 1rem/150% "Montserrat", sans-serif
+
+/* Typography
+p
+  color: #434b5f
+  margin-bottom: 1rem
+
+a
+  border-bottom: 1px solid currentcolor
+  text-decoration: none
+  transition: border-bottom ease 150ms
+  &:hover, &:focus
+    color: inherit
+
+h1, h2, h3, h4, h5, h6
+  margin-bottom: .5ch
+  text-rendering: optimizeLegibility
+  letter-spacing: .125ch
+
+h1
+  font: 400 1.75rem/150% "Montserrat", sans-serif
+  color: #434b5f
+
+h2
+  font: 600 1.75rem/150% "Montserrat", sans-serif
+  color: #ff8c07
+
+h3
+  font: 600 1.5rem/150% "Montserrat", sans-serif
+  color: #ff8c07
+
+h4
+  font: 600 1.25rem/150% "Montserrat", sans-serif
+  color: #596377
+  text-transform: uppercase
+
+h6
+  font: 600 1rem/150% "Montserrat", sans-serif
+  color: #596377
+  text-transform: uppercase
+
+/* Tables
+
+table
+  display: table
+  border-collapse: collapse
+  border-color: currentcolor
+
+td
+  border: 1px solid currentcolor
+  padding: 1ch
+
+th
+  border: 1px solid currentcolor
+  padding: 1ch
+  text-align: start
+  background-color: goldenrod
+  font-weight: 700
+
+/* Description list
+
+dl
+  margin-bottom: 1rem
+  column-count: 2
+
+dt
+  font-weight: 700
+  float: left
+  &::after
+    content: ':'
+    margin-right: 0.5ch
+
+tr:nth-child(odd)
+  background-color: rgba(217, 165, 32, 0.1)
+
+/* Images
+
+img
+  max-width: 100%
+
+/* Buttons
+
+.button
+  min-width: 12.5rem
+  border: none
+  background-color: #ffc623
+  border-radius: 10rem
+  padding: 1rem 3rem
+  font: 700 0.8rem/150% "Montserrat", sans-serif
+  color: white
+  letter-spacing: .035rem
+  text-decoration: none
+  transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
+  margin: 0 0 1rem
+  line-height: 1.5rem
+  text-transform: uppercase
+  text-align: center
+  display: block
+
+button
+  min-width: 12.5rem
+  border: none
+  background-color: #ffc623
+  border-radius: 10rem
+  padding: 1rem 3rem
+  font: 700 0.8rem/150% "Montserrat", sans-serif
+  color: white
+  letter-spacing: .035rem
+  text-decoration: none
+  transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
+  margin: 0 0 1rem
+  line-height: 1.5rem
+  text-transform: uppercase
+  text-align: center
+  display: block
+  &[type="submit"], &[type="reset"]
+    min-width: 12.5rem
+    border: none
+    background-color: #ffc623
+    border-radius: 10rem
+    padding: 1rem 3rem
+    font: 700 0.8rem/150% "Montserrat", sans-serif
+    color: white
+    letter-spacing: .035rem
+    text-decoration: none
+    transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
+    margin: 0 0 1rem
+    line-height: 1.5rem
+    text-transform: uppercase
+    text-align: center
+    display: block
+
+input
+  &[type="submit"], &[type="reset"]
+    min-width: 12.5rem
+    border: none
+    background-color: #ffc623
+    border-radius: 10rem
+    padding: 1rem 3rem
+    font: 700 0.8rem/150% "Montserrat", sans-serif
+    color: white
+    letter-spacing: .035rem
+    text-decoration: none
+    transition: background .2s ease-in, border .2s ease-in, color .2s ease-in
+    margin: 0 0 1rem
+    line-height: 1.5rem
+    text-transform: uppercase
+    text-align: center
+    display: block
+
+.button:hover
+  border-color: #ff8c07
+
+button
+  &:hover, &[type="submit"]:hover, &[type="reset"]:hover
+    border-color: #ff8c07
+
+input
+  &[type="submit"]:hover, &[type="reset"]:hover
+    border-color: #ff8c07
+  &[type="email"], &[type="date"], &[type="number"], &[type="search"], &[type="text"], &[type="tel"], &[type="url"], &[type="password"]
+    font: 400 0.6875rem/100% "Montserrat", sans-serif
+    color: #596377
+    height: 3rem
+    padding: .5rem .8rem
+    background-color: white
+    border: 1px solid #D1D1D1
+    border-radius: .25rem
+    box-shadow: none
+    box-sizing: border-box
+    margin-bottom: 1rem
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+
+/* Forms
+
+textarea, select
+  font: 400 0.6875rem/100% "Montserrat", sans-serif
+  color: #596377
+  height: 3rem
+  padding: .5rem .8rem
+  background-color: white
+  border: 1px solid #D1D1D1
+  border-radius: .25rem
+  box-shadow: none
+  box-sizing: border-box
+  margin-bottom: 1rem
+  -webkit-appearance: none
+  -moz-appearance: none
+  appearance: none
+
+textarea
+  min-height: 65px
+  padding-top: 6px
+  padding-bottom: 6px
+
+input
+  &[type="email"]:focus, &[type="date"]:focus, &[type="number"]:focus, &[type="search"]:focus, &[type="text"]:focus, &[type="tel"]:focus, &[type="url"]:focus, &[type="password"]:focus
+    border: 1px solid #33C3F0
+    outline: 0
+
+textarea:focus, select:focus
+  border: 1px solid #33C3F0
+  outline: 0
+
+label, legend
+  display: block
+  margin-bottom: .5rem
+  font-weight: 600
+
+fieldset
+  padding: 0
+  border-width: 0
+  margin-bottom: 1rem
+
+input
+  &[type="checkbox"], &[type="radio"]
+    display: inline
+
+label > .label-body
+  display: inline-block
+  margin-left: .5rem
+  font-weight: normal
+
+header
+  background-image: linear-gradient(-135deg, #FFC623 0%, #FF8C07 100%)
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2)
+  height: .3125rem
+  margin-bottom: 1.25rem
+
+main
+  margin: 0 1.25rem
+
+/**********
+/* Profile
+/**********
+
+header#profile
+  box-shadow: none
+  background-image: none
+  height: 10.4375rem
+  width: 100%
+  margin-bottom: 5rem
+  display: flex
+  position: relative
+  svg
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.2))
+
+.profile_container
+  height: 150px
+  width: 150px
+  display: flex
+  background: white
+  border-radius: 50%
+  margin: 5rem auto 1.25rem auto
+  position: absolute
+  top: 0rem
+  left: calc(50% - 5rem)
+  filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.2))
+  overflow: hidden
+
+  .profile__img
+    height: 100%
+    width: 100%
+    object-fit: cover
+    object-position: center
+
+.profile__icon
+  position: absolute
+  top: 1.25rem
+  height: 1.5rem
+  width: 1.5rem
+  display: block
+  text-indent: -99999px
+  text-decoration: none
+  border: 0
+  overflow: visible
+  &.left
+    left: 1.25rem
+  &.right
+    right: 1.25rem
+  &.edit
+    background: url("img/icon-edit.png")
+    background-size: contain
+  &.logout
+    background: url("img/icon-logout.png")
+    background-size: contain
+
+/**********
+/* Matches
+/**********
+
+main#matches ul
+  list-style: none
+  li
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2)
+    border-radius: .5rem
+    overflow: hidden
+    background-color: rgba(200, 200, 200, 0.1)
+    margin-bottom: 1rem
+    img
+      display: block
+    h3
+      padding: .5ch 1ch
+      margin: 0
+      font-weight: 400
+      color: #434b5f

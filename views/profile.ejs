@@ -13,21 +13,23 @@
       </g>
   </svg>
 
-  <% if (profile.profile_picture !== undefined && profile.profile_picture.length !== 0) { %>
-    <img class="profile__img"
-      src="/uploads/<%= profile.profile_picture %>"
-      alt="<%= profile.first_name %>'s profile picture">
-  <% } else { %>
-    <img class="profile__img"
-      src="/uploads/profile.png"
-      alt="no profile picture">
-  <% } %>
+  <div class="profile_container">
+    <% if (profile.profile_picture !== undefined && profile.profile_picture.length !== 0) { %>
+      <img class="profile__img"
+        src="/uploads/<%= profile.profile_picture %>"
+        alt="<%= profile.first_name %>'s profile picture">
+    <% } else { %>
+      <img class="profile__img"
+        src="/uploads/profile.png"
+        alt="no profile picture">
+    <% } %>
+  </div>
 
   <% if ( self == true) { %>
     <a class="profile__icon left logout" href="/logout">Logout</a>
     <a class="profile__icon right edit" href="/edit">Edit profile</a>
   <% } else { %>
-    
+
   <% } %>
 
 </header>
