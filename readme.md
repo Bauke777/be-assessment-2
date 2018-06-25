@@ -1,8 +1,16 @@
 # be-assessment-2
 
-A simple application for singles who love sport and want to meet up with other people.
+A small application for singles who love sport and want to meet up with other people.
 
-## Install
+## Installation
+
+**If you have NOT installed MongoDB yet**
+
+Before you start, make sure you have installed MongoDB. If you have not already done this, please read the documentation about [how to install MongoDB](https://docs.mongodb.com/manual/installation/) before you start.
+
+**If you have installed MongoDB already**
+
+`mongod`
 
 `git clone https://github.com/Bauke777/be-assessment-2.git`
 
@@ -11,6 +19,8 @@ A simple application for singles who love sport and want to meet up with other p
 `npm install`
 
 `node .`
+
+The application will run at `localhost:1950`, you can change the port number in `index.js`.
 
 ## Technology
 
@@ -27,6 +37,7 @@ In this project I will use
 
 Following packages are used
 
+* installation of MongoDB is required
 * body-parser (for parsing incoming requests)
 * express (to make the application run)
 * nodemon (restarting server when changes occur)
