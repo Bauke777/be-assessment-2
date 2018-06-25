@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')     // require body parser for forms
 const fs = require('fs')                      // require filesystem
 const bcrypt = require('bcrypt')              // hashing with bcrypt
 const multer = require('multer')              // multer for uploading images in forms
-const upload = multer({ dest: 'uploads/' })   // multer upload location
+const upload = multer({ dest: 'static/uploads/' })   // multer upload location
 
 // mongodb database
 const mongo = require('./database/database.js')   // mongoDB connection
@@ -37,19 +37,29 @@ app.use(session({
   saveUninitialized: false
 }))
 
+// check if logged in
+function loggedIn(req, res, next) {
+  if (req.session.email) {
+    next();
+  }
+  else {
+    res.redirect('/login')
+  }
+}
+
 // routes
 app.get('/', index)                   // index
-app.get('/users', showUsers)          // show a list of all users
-app.get('/profile', profile)          // show users own profile
-app.get('/edit', editProfileForm)     // edit users own profile
-app.post('/edit', editProfile)        // edit users own profile
-app.get('/matches', matches)          // show all matches
+app.get('/users', loggedIn, showUsers)          // show a list of all users
+app.get('/profile', loggedIn, profile)          // show users own profile
+app.get('/edit', loggedIn, editProfileForm)     // edit users own profile
+app.post('/edit', loggedIn, editProfile)        // edit users own profile
+app.get('/matches', loggedIn, matches)          // show all matches
 app.get('/login', loginForm)          // render login form
 app.post('/login', login)             // POST login
 app.get('/logout', logout)            // logout, destroy session
 app.get('/signup', signupForm)        // render signup form
 app.post('/signup', upload.single('profile_picture'), signup) // POST signup
-app.get('/users/:index', getUser)     // user profile page
+app.get('/users/:index', loggedIn, getUser)     // user profile page
 app.delete('/users/:index', remove)   // DELETE user
 app.listen(port)                      // listen on registered port
 
@@ -82,26 +92,18 @@ function showUsers(req, res) {
 // show users own profile
 function profile(req, res) {
 
-  // show profile if logged in
-  if (req.session.email) {
-
-    User.find({ email: req.session.email }, function(err ,user) {
-      console.log(user)
-      if (typeof user === 'undefined') {
-        const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
-        res.status(404).render('error.ejs', result)
-      } else {
-        res.render('profile.ejs', {
-          profile: user[0],
-          self: true
-        })
-      }
-    })
-  }
-  // redirect to login if not logged in
-  else {
-    res.redirect('/login')
-  }
+  User.find({ email: req.session.email }, function(err ,user) {
+    console.log(user)
+    if (typeof user === 'undefined') {
+      const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+      res.status(404).render('error.ejs', result)
+    } else {
+      res.render('profile.ejs', {
+        profile: user[0],
+        self: true
+      })
+    }
+  })
 
 }
 
@@ -129,79 +131,61 @@ function editProfileForm(req, res) {
 // GET edit users own profile
 function editProfile(req, res) {
 
-  // show profile if logged in
-  if (req.session.email) {
-
-    // create object for storing the user data
-    let userData = {
-      email: req.body.email,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      birthday: req.body.birthday,
-      description: req.body.description,
-      looking_for: {
-        gender: req.body.lf_gender
-      }
+  // create object for storing the user data
+  let userData = {
+    email: req.body.email,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    birthday: req.body.birthday,
+    description: req.body.description,
+    looking_for: {
+      gender: req.body.lf_gender
     }
-
-    // check if email and password are filled in
-    if (!userData.email) {
-      res.status(400).send('Emai is missing')
-      return
-    }
-
-    // check if first_name and last_name are filled in
-    if (!userData.first_name || !userData.last_name) {
-      res.status(400).send('First or last name are missing')
-    }
-
-    //use schema.create to insert data into the db
-    User.findOneAndUpdate({'email': req.session.email}, userData, {upsert:true}, function(err, doc){
-      if (err) {
-        res.status(400).send('Can not update profile.')
-      }
-      else {
-        res.redirect('/profile')
-      }
-    })
-
   }
-  else {
-    res.redirect('/login')
+
+  // check if email and password are filled in
+  if (!userData.email) {
+    res.status(400).send('Emai is missing')
+    return
   }
+
+  // check if first_name and last_name are filled in
+  if (!userData.first_name || !userData.last_name) {
+    res.status(400).send('First or last name are missing')
+  }
+
+  //use schema.create to insert data into the db
+  User.findOneAndUpdate({'email': req.session.email}, userData, {upsert:true}, function(err, doc){
+    if (err) {
+      res.status(400).send('Can not update profile.')
+    }
+    else {
+      res.redirect('/profile')
+    }
+  })
 
 }
 
 // show a list of all users
 function matches(req, res) {
 
-  // show profile if logged in
-  if (req.session.email) {
+  // get own profile info
+  User.find({email: req.session.email}, function(err, user) {
 
-    // get own profile info
-    User.find({email: req.session.email}, function(err, user) {
+    var gender = user[0].looking_for.gender
 
-      var gender = user[0].looking_for.gender
+    User.find({gender: gender}, function(err, users) {
 
-      User.find({gender: gender}, function(err, users) {
+      console.log(gender)
 
-        console.log(gender)
-
-        res.render('matches.ejs', {
-          title: 'My matches',
-          users: users
-        })
-
+      res.render('matches.ejs', {
+        title: 'My matches',
+        users: users
       })
 
     })
 
-
-  }
-  // redirect to login if not logged in
-  else {
-    res.redirect('/login')
-  }
+  })
 
 }
 
@@ -270,25 +254,18 @@ function getUser(req, res) {
 
   const id = req.params.index
 
-  if (req.session.email) {
-
-    User.find({ _id: id }, function(err ,user) {
-      console.log(user)
-      if (typeof user === 'undefined') {
-        const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
-        res.status(404).render('error.ejs', result)
-      } else {
-        res.render('profile.ejs', {
-          profile: user[0],
-          self: false
-        })
-      }
-    })
-  }
-  // redirect to login if not logged in
-  else {
-    res.redirect('/login')
-  }
+  User.find({ _id: id }, function(err ,user) {
+    console.log(user)
+    if (typeof user === 'undefined') {
+      const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+      res.status(404).render('error.ejs', result)
+    } else {
+      res.render('profile.ejs', {
+        profile: user[0],
+        self: false
+      })
+    }
+  })
 
 }
 
@@ -320,7 +297,7 @@ function signup(req, res) {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     password: req.body.password,
-    profile_picture: req.file,
+    profile_picture: req.file.filename,
     gender: req.body.gender,
     birthday: req.body.birthday,
     description: req.body.description
