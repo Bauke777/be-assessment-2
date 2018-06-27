@@ -110,21 +110,12 @@ function profile(req, res) {
 // edit users own profile
 function editProfileForm(req, res) {
 
-  // show profile if logged in
-  if (req.session.email) {
-
-    User.find({ email: req.session.email }, function(err ,user) {
-      res.render('edit-profile.ejs', {
-        title: 'Edit your profile',
-        profile: user[0]
-      })
+  User.find({ email: req.session.email }, function(err ,user) {
+    res.render('edit-profile.ejs', {
+      title: 'Edit your profile',
+      profile: user[0]
     })
-
-  }
-  // redirect to login if not logged in
-  else {
-    res.redirect('/login')
-  }
+  })
 
 }
 
@@ -199,41 +190,40 @@ function loginForm(req, res) {
 // POST login
 function login(req, res) {
 
-  // bcrypt.compare(password, user.password, function (err, result) {
-  //   if (result === true) {
-  //     return callback(null, user)
-  //   } else {
-  //     return callback()
-  //   }
-  // })
+  const email = req.body.email
+  const password = req.body.password
 
+  console.log(email, password);
+
+  User.findOne({ email: email }, function(err, user) {
+
+    if (err) return handleError(err);
+
+    console.log('req: ', password)
+    console.log('db: ', user.password)
+    bcrypt.compare(req.body.password, user.password, function (err, result) {
+      if (result === true) {
+        req.session.email = req.body.email
+        req.session.password = req.body.password
+        return res.redirect('/profile')
+      } else {
+        const result = {code: '401', text: 'Unauthorized', detail: "Wrong email or password."}
+        return res.status(401).render('error.ejs', result)
+      }
+    })
+  })
+
+  // console.log(req.body.email);
+  // console.log(req.body.password);
+  // req.session.email = req.body.email
+  // req.session.password = req.body.password
+  // //
+  // // bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
+  // //   // res == true
+  // // });
   //
-  // User.find({email: req.session.email}, (error, user) => {
-  //   if (error || !user) {
-  //     var err = new Error('Wrong email or password.')
-  //     err.status = 401
-  //     return next(err)
-  //   } else {
-  //     console.log('req: ', password)
-  //     console.log('db: ', user.password)
-  //     bcrypt.compare(req.session.password, user.password, function (err, result) {
-  //       if (result === true) {
-  //         req.session.userId = user._id
-  //         req.session.email = req.body.email
-  //         req.session.password = req.body.password
-  //         return res.redirect('/profile')
-  //       } else {
-  //         var err = new Error('Wrong email or password.')
-  //         err.status = 401
-  //         return next(err)
-  //       }
-  //     })
-  //   }
-  // })
+  // res.redirect('/profile')
 
-  req.session.email = req.body.email
-  req.session.password = req.body.password
-  res.redirect('/profile')
 
 }
 
@@ -275,7 +265,8 @@ function remove(req, res) {
 
   User.remove({ _id: id }, function(err) {
     if (err) {
-      res.negotiate(err)
+      const result = {code: '404', text: 'Not found', detail: "This user doesn't exist"}
+      res.status(404).render('error.ejs', result)
     }
     res.redirect('/')
   })
@@ -305,7 +296,7 @@ function signup(req, res) {
 
   // check if email and password are filled in
   if (!userData.email || !userData.password) {
-    res.status(400).send('Emai or password are missing')
+    res.status(400).send('Email or password are missing')
     return
   }
 

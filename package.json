@@ -8,7 +8,7 @@
     "index.js"
   ],
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
